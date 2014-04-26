@@ -26,13 +26,13 @@ public class PersonAction implements Preparable {
     }
 
     public String save() {
-        this.service.save(person);
+//        this.service.save(person);
         this.person = new Person();
         return execute();
     }
 
     public String remove() {
-        service.remove(id);
+//        service.remove(id);
         return execute();
     }
 
@@ -49,8 +49,8 @@ public class PersonAction implements Preparable {
     }
 
     public void prepare() throws Exception {
-        if (id != null)
-            person = service.find(id);
+//        if (id != null)
+//            person = service.getById(id);
     }
 
     public Person getPerson() {
