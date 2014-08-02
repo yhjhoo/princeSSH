@@ -5,6 +5,8 @@ public class testPrint {
 	
 	@Test
 	public void test11(){
-		System.out.println("fds");
+		System.out.println("1");
+		System.out.println("2");
+		System.out.println("3");
 	}
 }
