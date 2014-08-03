@@ -14,18 +14,17 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.opensymphony.xwork2.inject.Inject;
 import com.prince.model.Department;
 import com.prince.model.Person;
 import com.prince.service.PersonService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
-		"classpath*:Spring/Spring_*.xml"
-		})
-@TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class,
-	TransactionalTestExecutionListener.class})
+	"classpath*:Spring/Spring_*.xml"
+	})
+//@TestExecutionListeners({
+//	DependencyInjectionTestExecutionListener.class,
+//	TransactionalTestExecutionListener.class})
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
 @Transactional
 public class PersonServiceTest {
@@ -54,6 +53,22 @@ public class PersonServiceTest {
 		person.setLastName("last Name Test");
 		
 		personService.saveRollback(person);
+		
+		List<Person> list1 = personService.findAll();
+		System.out.println("list1 size: " + list1.size() );
+		Assert.isTrue(list.size() == (list1.size()-1));
+	}
+	
+	@Test
+	public void testCreate(){
+		List<Person> list = personService.findAll();
+		System.out.println("list size: " + list.size() );
+		
+		Person person = new Person();
+		person.setFirstName("first Name Test");
+		person.setLastName("last Name Test");
+		
+		personService.save(person);
 		
 		List<Person> list1 = personService.findAll();
 		System.out.println("list1 size: " + list1.size() );
