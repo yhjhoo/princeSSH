@@ -3,13 +3,17 @@ package com.prince.service;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
 
 import org.hibernate.criterion.Criterion;
 
 import com.prince.dao.CommonDao;
+import com.prince.model.Person;
 
-public class CommonService<T> {
+public abstract class CommonService<T> {
 	protected CommonDao<T> commonDao;
+	
+	public abstract void setCommonDao(CommonDao<T> commonDao);
 
 	public List<T> findAll() {
     	return commonDao.findAll();
@@ -29,6 +33,10 @@ public class CommonService<T> {
 	
 	public void save(Object obj){
 		commonDao.save(obj);
+	}
+	
+	public void saveAndFlush(Object obj){
+		commonDao.saveAndFlush(obj);
 	}
 	
 	public void saveOrUpdate(Object obj){

@@ -14,11 +14,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.GenericTypeResolver;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class CommonDao<T>{
+public abstract class CommonDao<T>{
 	@Autowired
 	protected SessionFactory sessionFactory;
 	
@@ -57,6 +54,11 @@ public class CommonDao<T>{
 	
 	public void save(Object obj){
 		getCurrentSession().save(obj);
+	}
+	
+	public void saveAndFlush(Object obj){
+		getCurrentSession().save(obj);
+		getCurrentSession().flush();
 	}
 	
 	public void saveOrUpdate(Object obj){

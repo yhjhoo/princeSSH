@@ -13,14 +13,6 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
         default-lazy-init="false">
        
-	<!-- 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/sshTest" />
-		<property name="username" value="root" />
-		<property name="password" value="123456" />
-	</bean> -->
-	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/sshTest" />
@@ -37,17 +29,6 @@
 		<property name="packagesToScan" value="com.prince.model" />
 		<!-- <property name="entityInterceptor" ref="auditLogInterceptor"/>-->
 		<property name="hibernateProperties">
-			<!-- 
-			<value>
- 				hibernate.hbm2ddl.auto=create 
- 				hibernate.show_sql=true
-			 
-				hibernate.connection.autocommit=false
-				hibernate.id.new_generator_mappings=true  
-				hibernate.dialect=org.hibernate.dialect.MySQLDialect
-				connection.driver_class=com.mysql.jdbc.Driver
-			</value>
-			-->
 			<props>
 	            <prop key="hibernate.hbm2ddl.auto">update</prop>
 	            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
@@ -63,10 +44,23 @@
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="dataSource" ref="dataSource" />
+		<!-- <property name="dataSource" ref="dataSource" /> -->
 	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	<tx:annotation-driven />
+	<context:annotation-config/>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="ServiceOperation" expression="execution(* com.prince.service.*Service.*(*))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="ServiceOperation" />
+	</aop:config>
 	
 	<!-- <context:property-placeholder location="jdbc.properties"/>-->
 	
