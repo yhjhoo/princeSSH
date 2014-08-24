@@ -11,6 +11,7 @@
 	<properties>
 		<struts2.version>2.3.16.1</struts2.version>
 		<spring.version>4.0.3.RELEASE</spring.version>
+		<spring.security.version>3.2.5.RELEASE</spring.security.version>
 		<hibernate.version>4.3.5.Final</hibernate.version>
 		<struts2-jquery.version>3.7.1</struts2-jquery.version>
 	</properties>
@@ -55,6 +56,12 @@
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
@@ -71,6 +78,11 @@
 			<version>${spring.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -89,6 +101,24 @@
 			<artifactId>struts2-spring-plugin</artifactId>
 			<version>${struts2.version}</version>
 		</dependency>
+		
+		
+		<dependency>
+	        <groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-config</artifactId>
+	        <version>${spring.security.version}</version>
+	    </dependency>
+	    <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		
+		<!-- <dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+		    <version>3.0.7.RELEASE</version>
+		</dependency> -->
 
 		<dependency>
 		  <groupId>org.hibernate</groupId>
@@ -101,7 +131,12 @@
 	  		<artifactId>log4j</artifactId>
 	  		<version>1.2.17</version>
 	  	</dependency>
-
+	  	
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.7</version>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-logging</groupId>
