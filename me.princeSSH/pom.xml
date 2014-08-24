@@ -11,6 +11,7 @@
 	<properties>
 		<struts2.version>2.3.16.1</struts2.version>
 		<spring.version>4.0.3.RELEASE</spring.version>
+		<spring.security.version>3.2.5.RELEASE</spring.security.version>
 		<hibernate.version>4.3.5.Final</hibernate.version>
 		<struts2-jquery.version>3.7.1</struts2-jquery.version>
 	</properties>

@@ -67,5 +67,15 @@ public class PersonService extends CommonService<Person>{
 	}
 
 
-	
+	public void saveBatch(List<Person> persons) throws SQLException {
+		int i = 0;
+		for(Person p : persons){
+			personDao.save(p);
+			i++;
+			if(i == 100){
+				throw new SQLException();
+			}
+		}
+	}
+
 }

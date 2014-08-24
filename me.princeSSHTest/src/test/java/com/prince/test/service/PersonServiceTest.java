@@ -1,4 +1,6 @@
 package com.prince.test.service;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -81,21 +83,40 @@ public class PersonServiceTest {
 		System.out.println("list size: " + list.size() );
 		
 		Department departement = new Department();
-		departement.setName("test Name");
+		departement.setName("test Name1");
 		departement.setDescription("test Description");
 		
-		for(int i=0;i<2;i++){
+		for(int i=0;i<200;i++){
 			Person p = new Person();
 			p.setFirstName("first Name Test " + i);
 			p.setLastName("last Name Test " + i);
 			p.setDepartement(departement);
-			personService.save(p);
-			
+			personService.save(p);	
 		}
 		
 		List<Person> list1 = personService.findAll();
 		System.out.println("list1 size: " + list1.size() );
 		Assert.isTrue(list.size() == (list1.size()-2));
+	}
+	
+	@Test
+	public void testCreateBatchRollback() throws SQLException{
+		Department departement = new Department();
+		departement.setName("test Name1");
+		departement.setDescription("test Description");
+		
+		List<Person> persons = new ArrayList<Person>();
+		
+		for(int i=0;i<90;i++){
+			Person p = new Person();
+			p.setFirstName("first Name Test " + i);
+			p.setLastName("last Name Test " + i);
+			p.setDepartement(departement);
+			persons.add(p);
+		}
+		
+		personService.saveBatch(persons);
+		
 	}
 	
 	@Test
