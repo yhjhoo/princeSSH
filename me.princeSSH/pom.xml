@@ -42,6 +42,12 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>org.apache.struts</groupId>
+		    <artifactId>struts2-json-plugin</artifactId>
+		    <version>${struts2.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
@@ -120,6 +126,12 @@
 	  		<artifactId>log4j</artifactId>
 	  		<version>1.2.17</version>
 	  	</dependency>
+	  	
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.7</version>
+		</dependency>
 
 
 		<dependency>
@@ -130,6 +142,11 @@
 		<dependency>
 			<groupId>com.jgeppert.struts2.jquery</groupId>
 			<artifactId>struts2-jquery-plugin</artifactId>
+			<version>${struts2-jquery.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jgeppert.struts2.jquery</groupId>
+			<artifactId>struts2-jquery-grid-plugin</artifactId>
 			<version>${struts2-jquery.version}</version>
 		</dependency>
 		<dependency>

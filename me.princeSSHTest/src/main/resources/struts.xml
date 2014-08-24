@@ -4,7 +4,6 @@
 	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
 	"http://struts.apache.org/dtds/struts-2.3.dtd">
 
-<!-- START SNIPPET: xworkSample -->
 <struts>
 
     <!-- Some or all of these can be flipped to true for debugging -->
@@ -25,7 +24,7 @@
     <constant name="struts.serve.static.browserCache" value="false" />-->
 
 
-    <package name="default" extends="struts-default">
+    <package name="app-default" extends="struts-default,json-default">
        	<!-- 
         <interceptors>
             <interceptor-stack name="crudStack">
@@ -35,10 +34,18 @@
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>
         </interceptors>-->
+        
     </package>
-
-
+	
+	
+	<package name="person" namespace="/personx" extends="app-default">
+		<action name="listAllJson" class="com.prince.action.PersonAction" method="listAll">
+			<result type="json">
+				<param name="noCache">true</param>
+		        <param name="excludeNullProperties">true</param>
+		        <param name="root">persons</param>
+			</result>
+		</action>
+	</package>
 </struts>
-
-<!-- END SNIPPET: xworkSample -->
 

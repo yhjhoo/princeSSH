@@ -14,7 +14,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.stereotype.Repository;
 
+//@Repository
 public abstract class CommonDao<T>{
 	@Autowired
 	protected SessionFactory sessionFactory;
@@ -30,6 +32,7 @@ public abstract class CommonDao<T>{
 
 	protected Session getCurrentSession(){
 		return sessionFactory.getCurrentSession();
+		
 	}
 	
     @SuppressWarnings("unchecked")

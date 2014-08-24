@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ public class PersonService extends CommonService<Person>{
 	@Resource
 	private PersonDao personDao;
 	
+	@Autowired
+	protected SessionFactory sessionFactory;
+	
 	@Resource
 	private DepartmentDao departmentDao;
 	
@@ -37,10 +42,11 @@ public class PersonService extends CommonService<Person>{
 		this.commonDao = personDao;
 	}
 	
-//
-//	public List<Person> findAll() {
-//    	return personDao.findAll();
-//    }
+
+	/*public List<Person> findAll1() {
+    	//return personDao.findAll();
+		return commonDao.findAll();
+    }*/
 
 
 	/**
