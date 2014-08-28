@@ -7,12 +7,13 @@ import javax.annotation.Resource;
 
 import org.hibernate.criterion.Criterion;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prince.dao.CommonDao;
 import com.prince.model.Person;
 
-@Transactional
+//@Transactional
 @Service
 public abstract class CommonService<T> {
 	protected CommonDao<T> commonDao;

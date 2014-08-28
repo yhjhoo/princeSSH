@@ -13,11 +13,18 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
         default-lazy-init="false">
        
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/sshTest" />
 		<property name="username" value="root" />
 		<property name="password" value="123456" />
+	</bean> -->
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="url" value="jdbc:sqlserver://10.28.68.69:1433;databaseName=SSHTest" />
+		<property name="username" value="trportaladmin" />
+		<property name="password" value="trportaladmin" />
 	</bean>
 	
 	<context:component-scan base-package="com.prince" />
@@ -31,7 +38,6 @@
 		<property name="hibernateProperties">
 			<props>
 	            <prop key="hibernate.hbm2ddl.auto">update</prop>
-	            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 	            <prop key="hibernate.show_sql">false</prop>
 	            <!-- <prop key="hibernate.jdbc.fetch_size">50</prop>
 				<prop key="hibernate.jdbc.batch_size">30</prop>--> 
@@ -44,23 +50,24 @@
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
-		<!-- <property name="dataSource" ref="dataSource" /> -->
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<tx:annotation-driven />
-	<context:annotation-config/>
+	<!-- <tx:annotation-driven /> -->
+	<context:annotation-config /> 
 	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
+			<tx:method name="*find*" read-only="true" isolation="READ_UNCOMMITTED"/>
 			<!-- <tx:method name="find*" read-only="true" />-->
 			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception"/>
 		</tx:attributes>
 	</tx:advice>
 
 	<aop:config>
-		<aop:pointcut id="ServiceOperation" expression="execution(* com.prince.service.*Service.*(*))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="ServiceOperation" />
+		<aop:pointcut id="ServiceOperation" expression="execution(* com.prince.service.*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="ServiceOperation"/>
 	</aop:config>
 	
 	<!-- <context:property-placeholder location="jdbc.properties"/>-->

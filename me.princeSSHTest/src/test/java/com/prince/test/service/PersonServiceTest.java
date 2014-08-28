@@ -7,12 +7,10 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -35,6 +33,7 @@ public class PersonServiceTest {
 	private PersonService personService;
 	
 	@Test
+	
 	public void testFindAll(){
 		System.out.println("Hello Test");
 		Assert.notNull(personService);
@@ -78,6 +77,7 @@ public class PersonServiceTest {
 	}
 
 	@Test
+	@Repeat(10)
 	public void testCreateBatch(){
 		List<Person> list = personService.findAll();
 		System.out.println("list size: " + list.size() );
@@ -86,7 +86,7 @@ public class PersonServiceTest {
 		departement.setName("test Name1");
 		departement.setDescription("test Description");
 		
-		for(int i=0;i<200;i++){
+		for(int i=0;i<20;i++){
 			Person p = new Person();
 			p.setFirstName("first Name Test " + i);
 			p.setLastName("last Name Test " + i);
@@ -96,7 +96,7 @@ public class PersonServiceTest {
 		
 		List<Person> list1 = personService.findAll();
 		System.out.println("list1 size: " + list1.size() );
-		Assert.isTrue(list.size() == (list1.size()-2));
+		Assert.isTrue(list.size() == (list1.size()-20));
 	}
 	
 	@Test

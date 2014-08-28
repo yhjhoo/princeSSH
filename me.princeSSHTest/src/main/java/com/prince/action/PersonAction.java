@@ -43,7 +43,7 @@ public class PersonAction extends ActionSupport implements Preparable {
 
     public String listAll() {
     	//personService.findAll1();
-        this.persons = personService.findAll();
+        this.persons = personService.findAll1();
         return SUCCESS;
     }
 

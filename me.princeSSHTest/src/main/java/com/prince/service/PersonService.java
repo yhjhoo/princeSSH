@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prince.dao.CommonDao;
@@ -18,7 +19,7 @@ import com.prince.model.Department;
 import com.prince.model.Person;
 
 
-@Transactional
+//@Transactional
 @Service
 public class PersonService extends CommonService<Person>{
 	@Resource
@@ -43,10 +44,11 @@ public class PersonService extends CommonService<Person>{
 	}
 	
 
-	/*public List<Person> findAll1() {
+	//@Transactional(isolation=Isolation.READ_UNCOMMITTED)
+	public List<Person> findAll1() {
     	//return personDao.findAll();
 		return commonDao.findAll();
-    }*/
+    }
 
 
 	/**
