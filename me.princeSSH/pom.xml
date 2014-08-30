@@ -13,6 +13,7 @@
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<spring.security.version>3.2.5.RELEASE</spring.security.version>
 		<hibernate.version>4.3.5.Final</hibernate.version>
+		<hibernate.search.version>4.5.1.Final</hibernate.search.version>
 		<struts2-jquery.version>3.7.1</struts2-jquery.version>
 	</properties>
 	
@@ -150,6 +151,19 @@
 		  <artifactId>hibernate-entitymanager</artifactId>
 		  <version>${hibernate.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-orm</artifactId>
+			<version>${hibernate.search.version}</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.hibernate</groupId>
+		  <artifactId>hibernate-entitymanager</artifactId>
+		  <version>${hibernate.version}</version>
+		</dependency>
+		
 		
 		<dependency>
 	  		<groupId>log4j</groupId>
