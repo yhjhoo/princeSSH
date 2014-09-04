@@ -6,13 +6,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 @Entity
+@Indexed
 public class Department {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
     
+	@Field
 	@Column(name="name", length=25, nullable=false)
 	private String name;
 	

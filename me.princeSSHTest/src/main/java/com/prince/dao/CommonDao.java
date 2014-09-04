@@ -21,6 +21,10 @@ public abstract class CommonDao<T>{
 	@Autowired
 	protected SessionFactory sessionFactory;
 	
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
 	private Class<T> persistantClass;
 
 	private Logger log = Logger.getLogger(this.getClass());
@@ -68,6 +72,10 @@ public abstract class CommonDao<T>{
 		getCurrentSession().saveOrUpdate(obj);
 	}
 	
+	public void update(Object obj){
+		getCurrentSession().update(obj);
+	}
+	
 	public void delete(Object obj){
 		getCurrentSession().delete(obj);
 	}
@@ -94,7 +102,7 @@ public abstract class CommonDao<T>{
     	return (Long) criteria.list().get(0);
 	}
 
-	private void setParams(Criteria criteria, Set<Criterion> criterions) {
+	protected void setParams(Criteria criteria, Set<Criterion> criterions) {
 		for(Criterion criterion : criterions){
 			if(criterion instanceof SimpleExpression){
 				criteria.add(criterion);

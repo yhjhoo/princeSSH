@@ -13,19 +13,20 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
         default-lazy-init="false">
        
-	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/sshTest" />
 		<property name="username" value="root" />
 		<property name="password" value="123456" />
-	</bean> -->
+	</bean>
 	
+	<!-- 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<property name="url" value="jdbc:sqlserver://10.28.68.69:1433;databaseName=SSHTest" />
 		<property name="username" value="trportaladmin" />
 		<property name="password" value="trportaladmin" />
-	</bean>
+	</bean> -->
 	
 	<context:component-scan base-package="com.prince" />
 	
@@ -37,10 +38,14 @@
 		<!-- <property name="entityInterceptor" ref="auditLogInterceptor"/>-->
 		<property name="hibernateProperties">
 			<props>
-	            <prop key="hibernate.hbm2ddl.auto">update</prop>
+	            <prop key="hibernate.hbm2ddl.auto">false</prop>
 	            <prop key="hibernate.show_sql">false</prop>
 	            <!-- <prop key="hibernate.jdbc.fetch_size">50</prop>
 				<prop key="hibernate.jdbc.batch_size">30</prop>--> 
+				
+				<prop key="hibernate.search.default.directory_provider">filesystem</prop>
+
+				<prop key="hibernate.search.default.indexBase">/opt/lucene/indexes</prop>
 	        </props>
 		</property>
 	</bean>

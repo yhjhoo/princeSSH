@@ -14,16 +14,16 @@
 	<description>test of SSH configuration</description>
 
 	<dependencies>
-		<!-- <dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.30</version>
-		</dependency> -->
-		<dependency>
+		</dependency> 
+		<!-- <dependency>
 		    <groupId>com.microsoft.sqlserver</groupId>
 		    <artifactId>sqljdbc4</artifactId>
 		    <version>4.0</version>
-		</dependency>
+		</dependency>-->
 		
 		<dependency>
 			<groupId>junit</groupId>

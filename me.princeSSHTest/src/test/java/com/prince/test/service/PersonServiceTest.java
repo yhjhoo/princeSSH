@@ -1,10 +1,19 @@
 package com.prince.test.service;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Session;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Repeat;
@@ -16,7 +25,10 @@ import org.springframework.util.Assert;
 
 import com.prince.model.Department;
 import com.prince.model.Person;
+import com.prince.model.WorldCity;
+import com.prince.service.DepartmentService;
 import com.prince.service.PersonService;
+import com.prince.service.WorldCityService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
@@ -31,9 +43,13 @@ public class PersonServiceTest {
 
 	@Resource
 	private PersonService personService;
+	@Resource
+	private DepartmentService departmentService;
+	
+	@Resource
+	private WorldCityService worldCityService;
 	
 	@Test
-	
 	public void testFindAll(){
 		System.out.println("Hello Test");
 		Assert.notNull(personService);
@@ -75,28 +91,56 @@ public class PersonServiceTest {
 		System.out.println("list1 size: " + list1.size() );
 		Assert.isTrue(list.size() == (list1.size()-1));
 	}
+	
+	@Test
+	public void testGetNames() throws IOException{
+		Path file = Paths.get("names.txt");
+		List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
+		System.out.println("list size: " + lines.size() );
+	}
 
 	@Test
-	@Repeat(10)
-	public void testCreateBatch(){
-		List<Person> list = personService.findAll();
-		System.out.println("list size: " + list.size() );
+	@Repeat(112264)
+	public void testCreateBatch() throws IOException{
+		//List<Person> list = personService.findAll();
+		//System.out.println("list size: " + list.size() );
 		
 		Department departement = new Department();
-		departement.setName("test Name1");
-		departement.setDescription("test Description");
+//		departement.setName("test Name1");
+//		departement.setDescription("test Description");
+		Random rand = new Random();
+		departement = departmentService.getById(rand.nextInt(7));
 		
-		for(int i=0;i<20;i++){
+		WorldCity wc = new WorldCity();
+		//wc.setId(rand.nextInt(112264));
+		wc = worldCityService.getById(rand.nextInt(112264) );
+		
+		
+		Path file = Paths.get("names.txt");
+		List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
+		System.out.println("list size: " + lines.size() );
+		//for(int i=0;i<1;i++){
+		for(String line : lines){
+			String[] names = line.split(" ");
 			Person p = new Person();
-			p.setFirstName("first Name Test " + i);
-			p.setLastName("last Name Test " + i);
+			
+			if(names.length > 1){
+				p.setFirstName(names[0]);
+				p.setLastName(names[1]);
+			}else{
+				p.setFirstName(names[0] + " " + lines.get(rand.nextInt(500)));
+				p.setLastName(names[0] + " " + lines.get(rand.nextInt(500)));
+			}
+			
 			p.setDepartement(departement);
+			p.setWorldCity(wc);
 			personService.save(p);	
+			Assert.notNull(p);
 		}
 		
-		List<Person> list1 = personService.findAll();
-		System.out.println("list1 size: " + list1.size() );
-		Assert.isTrue(list.size() == (list1.size()-20));
+		//List<Person> list1 = personService.findAll();
+		//System.out.println("list1 size: " + list1.size() );
+		//Assert.isTrue(list.size() == (list1.size()-1));
 	}
 	
 	@Test
@@ -131,4 +175,7 @@ public class PersonServiceTest {
 		Assert.isTrue(list.size() == (list1.size()+1));
 		
 	}
+	
+	
+	
 }
