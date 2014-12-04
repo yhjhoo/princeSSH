@@ -1,10 +1,10 @@
 package com.prince.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 
@@ -13,6 +13,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Indexed
@@ -21,10 +22,12 @@ public class Person {
 	@GeneratedValue
 	private Integer id;
 
-	@Field
+	@Column
+	@Length(max=10)
 	private String lastName;
 	
-	@Field
+	@Column
+	@Length(max=10)
 	private String firstName;
 
 	@IndexedEmbedded

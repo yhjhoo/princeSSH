@@ -3,22 +3,13 @@ package com.prince.action;
 import java.util.List;
 
 
-
-
-
-
-
-
-
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.inject.Inject;
 import com.prince.model.Person;
 import com.prince.service.PersonService;
 

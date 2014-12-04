@@ -90,28 +90,33 @@ public class PersonDaoTest {
 	
 	@Test
 //	@Repeat(1000)
-	public void testCreate() throws Exception{
+	public void testCreate() {//throws Exception{
 		Long sum = personDao.findAllCount();
 		System.out.println("list size: " + sum );
 		
 		Person p = new Person();
-		p.setFirstName("first Name Test" + new Date());
-		p.setLastName("last Name Test" + new Date());
+		p.setFirstName("first 12345");
+		p.setLastName("last");
 		
-		List<Department> listD = departmentDao.findAll();
+		/*List<Department> listD = departmentDao.findAll();
 		if(listD==null || listD.size()==0){
 			Department departement = new Department();
 			departmentDao.save(departement);
 			p.setDepartement(departement);
 		}else{
 			p.setDepartement(listD.get(0));
+		}*/
+		
+		try {
+			personDao.save1(p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		personDao.save(p);
-		
-		if(true){
+		/*if(true){
 			throw new Exception("fds");
-		}
+		}*/
 		
 		Long sum1 = personDao.findAllCount();
 		System.out.println("list1 size: " + sum1 );

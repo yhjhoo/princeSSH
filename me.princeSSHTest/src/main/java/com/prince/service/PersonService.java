@@ -74,10 +74,17 @@ public class PersonService extends CommonService<Person>{
 		for(Person p : persons){
 			personDao.save(p);
 			i++;
-			if(i == 100){
-				throw new SQLException();
+			if(i%100 == 0){
+				personDao.getSessionFactory().getCurrentSession().flush();
+				//throw new SQLException();
 			}
 		}
+	}
+
+
+	public void save1(Person person) {
+		personDao.save1(person);
+		
 	}
 
 }

@@ -3,9 +3,12 @@ package com.prince.dao;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.sql.JoinType;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.prince.model.Person;
@@ -14,6 +17,9 @@ import com.prince.model.Person;
 public class PersonDao extends CommonDao<Person>{
 
 	//findByCreateria
+	
+	@Resource
+	private HibernateTemplate hibernateTemplate;
 	
 	@SuppressWarnings("unchecked")
 	public List<Person> findByCreateria(Set<Criterion> criterions, int pageSize, int pageNum){
@@ -28,5 +34,11 @@ public class PersonDao extends CommonDao<Person>{
 			criteria.setMaxResults(pageSize);
 		}
 		return criteria.list();
+	}
+
+	public void save1(Person person) {
+		//getCurrentSession().save(person);
+		hibernateTemplate.save(person);
+		
 	}
 }

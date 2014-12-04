@@ -38,7 +38,7 @@ import com.prince.service.WorldCityService;
 //	DependencyInjectionTestExecutionListener.class,
 //	TransactionalTestExecutionListener.class})
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
-@Transactional
+//@Transactional
 public class PersonServiceTest {
 
 	@Resource
@@ -82,10 +82,19 @@ public class PersonServiceTest {
 		System.out.println("list size: " + list.size() );
 		
 		Person person = new Person();
-		person.setFirstName("first Name Test");
-		person.setLastName("last Name Test");
+		person.setFirstName("first Name");
+		person.setLastName("last Name");
 		
-		personService.save(person);
+		Person person1 = new Person();
+		person1.setFirstName("first Name 123456");
+		person1.setLastName("last Name");
+		
+		try {
+			personService.save1(person1);
+			//personService.save1(person);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		List<Person> list1 = personService.findAll();
 		System.out.println("list1 size: " + list1.size() );
@@ -151,11 +160,11 @@ public class PersonServiceTest {
 		
 		List<Person> persons = new ArrayList<Person>();
 		
-		for(int i=0;i<90;i++){
+		for(int i=0;i<500;i++){
 			Person p = new Person();
-			p.setFirstName("first Name Test " + i);
-			p.setLastName("last Name Test " + i);
-			p.setDepartement(departement);
+			p.setFirstName("first Name");
+			p.setLastName("last Name");
+			//p.setDepartement(departement);
 			persons.add(p);
 		}
 		
