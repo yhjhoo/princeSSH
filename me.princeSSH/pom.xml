@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>princeSSH</groupId>
-	<artifactId>me.princeSSH</artifactId>
-	<version>0.0.1</version>
+	<groupId>me.prince</groupId>
+	<artifactId>ssh</artifactId>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>Prince basic SSH pom</name>
 	<description>Prince basic SSH pom</description>
@@ -212,4 +212,18 @@
 			<version>${struts2-jquery.version}</version>
 		</dependency>
 	</dependencies>
+	
+	
+	<distributionManagement>
+        <repository>
+            <id>my-repo</id>
+            <name>my-releases</name>
+            <url>http://localhost:8081/artifactory/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+           <id>my-repo</id>
+            <name>my-releases</name>
+            <url>http://localhost:8081/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
