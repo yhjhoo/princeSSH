@@ -82,9 +82,15 @@ public class PersonService extends CommonService<Person>{
 	}
 
 
-	public void save1(Person person) {
-		personDao.save1(person);
-		
+	public List<Person> findBySQLRestrication() {
+		// TODO Auto-generated method stub
+		return personDao.findBySQLRestrication();
 	}
+
+
+//	public void save1(Person person) {
+//		personDao.save1(person);
+//		
+//	}
 
 }

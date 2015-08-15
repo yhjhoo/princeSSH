@@ -77,6 +77,7 @@ public class PersonServiceTest {
 	}
 	
 	@Test
+//	@Repeat(1000)
 	public void testCreate(){
 		List<Person> list = personService.findAll();
 		System.out.println("list size: " + list.size() );
@@ -90,7 +91,7 @@ public class PersonServiceTest {
 		person1.setLastName("last Name");
 		
 		try {
-			personService.save1(person1);
+			personService.save(person);
 			//personService.save1(person);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,7 +99,7 @@ public class PersonServiceTest {
 		
 		List<Person> list1 = personService.findAll();
 		System.out.println("list1 size: " + list1.size() );
-		Assert.isTrue(list.size() == (list1.size()-1));
+//		Assert.isTrue(list.size() == (list1.size()-1));
 	}
 	
 	@Test
@@ -185,6 +186,13 @@ public class PersonServiceTest {
 		
 	}
 	
+	
+	@Test
+	public void testSqlRestriction(){
+		List<Person> list = personService.findBySQLRestrication();
+		System.out.println("list size: " + list.size() );
+		
+	}
 	
 	
 }

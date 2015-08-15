@@ -108,7 +108,7 @@ public class PersonDaoTest {
 		}*/
 		
 		try {
-			personDao.save1(p);
+			personDao.save(p);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,8 +19,8 @@ public class PersonDao extends CommonDao<Person>{
 
 	//findByCreateria
 	
-	@Resource
-	private HibernateTemplate hibernateTemplate;
+//	@Resource
+//	private HibernateTemplate hibernateTemplate;
 	
 	@SuppressWarnings("unchecked")
 	public List<Person> findByCreateria(Set<Criterion> criterions, int pageSize, int pageNum){
@@ -36,9 +37,21 @@ public class PersonDao extends CommonDao<Person>{
 		return criteria.list();
 	}
 
-	public void save1(Person person) {
-		//getCurrentSession().save(person);
-		hibernateTemplate.save(person);
+	public List<Person> findBySQLRestrication() {
+		Criteria criteria = getCurrentSession().createCriteria(Person.class, "p");
+		criteria.createAlias("p.departement", "d", JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("p.worldCity", "wc", JoinType.LEFT_OUTER_JOIN);
 		
+//		criteria.add(Restrictions.like("p.firstName", "%test%"));
+		
+		criteria.add(Restrictions.sqlRestriction("firstName like '%test%' "));
+		
+		return criteria.list();
 	}
+
+//	public void save1(Person person) {
+//		//getCurrentSession().save(person);
+//		hibernateTemplate.save(person);
+//		
+//	}
 }
