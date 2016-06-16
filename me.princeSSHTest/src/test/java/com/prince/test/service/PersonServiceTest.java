@@ -142,7 +142,7 @@ public class PersonServiceTest {
 				p.setLastName(names[0] + " " + lines.get(rand.nextInt(500)));
 			}
 			
-			p.setDepartement(departement);
+//			p.setDepartement(departement);
 			p.setWorldCity(wc);
 			personService.save(p);	
 			Assert.notNull(p);

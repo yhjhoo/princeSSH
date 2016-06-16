@@ -100,4 +100,69 @@ public class WorldCity {
 				+ in_location + ", geo_lat=" + geo_lat + ", geo_lng=" + geo_lng
 				+ ", db_id=" + db_id + "]";
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((db_id == null) ? 0 : db_id.hashCode());
+		result = prime * result + ((geo_lat == null) ? 0 : geo_lat.hashCode());
+		result = prime * result + ((geo_lng == null) ? 0 : geo_lng.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((in_location == null) ? 0 : in_location.hashCode());
+		result = prime * result + ((iso == null) ? 0 : iso.hashCode());
+		result = prime * result + ((local_name == null) ? 0 : local_name.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WorldCity other = (WorldCity) obj;
+		if (db_id == null) {
+			if (other.db_id != null)
+				return false;
+		} else if (!db_id.equals(other.db_id))
+			return false;
+		if (geo_lat == null) {
+			if (other.geo_lat != null)
+				return false;
+		} else if (!geo_lat.equals(other.geo_lat))
+			return false;
+		if (geo_lng == null) {
+			if (other.geo_lng != null)
+				return false;
+		} else if (!geo_lng.equals(other.geo_lng))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (in_location == null) {
+			if (other.in_location != null)
+				return false;
+		} else if (!in_location.equals(other.in_location))
+			return false;
+		if (iso == null) {
+			if (other.iso != null)
+				return false;
+		} else if (!iso.equals(other.iso))
+			return false;
+		if (local_name == null) {
+			if (other.local_name != null)
+				return false;
+		} else if (!local_name.equals(other.local_name))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
 }

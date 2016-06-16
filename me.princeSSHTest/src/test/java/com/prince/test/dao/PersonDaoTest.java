@@ -8,9 +8,14 @@ import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.solr.common.util.Hash;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -88,15 +93,65 @@ public class PersonDaoTest {
 		System.out.println(p);
 	}
 	
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testIndexPerson(){
+		Session session = personDao.getSessionFactory().getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		
+		Person person = personDao.getById(1);
+		
+		fullTextSession.index(person);
+	}
+	
+	@Test
+	public void testSearchPerson1(){
+		Session session = personDao.getSessionFactory().getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		QueryBuilder qb = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(Person.class).get();
+		
+		Query luceneQuery = 
+				qb.keyword()
+//				qb.phrase()
+//				.onFields( "firstName", "departements.name")
+				.onFields("firstName").matching("first 11")
+//				.onField("firstName").sentence("first 12")
+//				.onFields("hasFever").matching(false)
+				.createQuery();
+		
+		FullTextQuery fq = fullTextSession.createFullTextQuery(luceneQuery, Person.class);
+//		Sort sort = new Sort(new SortField("departements.name", SortField.STRING, true));
+//		fq.setSort(sort);
+		List<Person> list = fq.setFirstResult(0).setMaxResults(2).list();
+		
+		System.out.println("list size: " + fq.getResultSize() );
+		
+		System.out.println("list size: " + list.size() );
+		for(Person wc : list){
+			System.out.println(wc);
+//			for(Department d : wc.getDepartements()){
+//				System.out.println("============" + d);
+//			}
+//			wc.setLocal_name(wc.getLocal_name() + " China");
+//			worldCityDao.saveOrUpdate(wc);
+			
+//			System.out.println(wc );
+		}
+	}
+	
+	
 	@Test
 //	@Repeat(1000)
 	public void testCreate() {//throws Exception{
 		Long sum = personDao.findAllCount();
 		System.out.println("list size: " + sum );
 		
+		int i = 16;
+		
 		Person p = new Person();
-		p.setFirstName("first 12345");
-		p.setLastName("last");
+		p.setFirstName("first " + i);
+		p.setLastName("last " + i);
 		
 		/*List<Department> listD = departmentDao.findAll();
 		if(listD==null || listD.size()==0){
@@ -106,6 +161,21 @@ public class PersonDaoTest {
 		}else{
 			p.setDepartement(listD.get(0));
 		}*/
+		
+		
+		Department departement1 = new Department();
+		departement1.setName("dept" + i);
+		departement1.setDescription("dept" + i + " desc");
+		
+		Department departement2 = new Department();
+		departement2.setName("dept 2 " + i);
+		departement2.setDescription("dept 2 desc" + i);
+		
+		Set<Department> departements = new HashSet<>();
+		departements.add(departement1);
+		departements.add(departement2);
+		
+		p.setDepartements(departements );
 		
 		try {
 			personDao.save(p);
@@ -118,9 +188,9 @@ public class PersonDaoTest {
 			throw new Exception("fds");
 		}*/
 		
-		Long sum1 = personDao.findAllCount();
-		System.out.println("list1 size: " + sum1 );
-		Assert.isTrue(sum == (sum1 - 1));
+//		Long sum1 = personDao.findAllCount();
+//		System.out.println("list1 size: " + sum1 );
+//		Assert.isTrue(sum == (sum1 - 1));
 	}
 	
 	
@@ -200,7 +270,7 @@ public class PersonDaoTest {
 //				.matching("network").createQuery();
 		Query luceneQuery = qb
 					.bool()
-					//.must(qb.keyword().onField("firstName").matching("yang ning").createQuery())
+					.must(qb.keyword().onField("firstName").matching("first").createQuery())
 					//.must(qb.keyword().onField("departement.name").matching("network").createQuery())
 					//.must(qb.keyword().onField("worldCity.local_name").createQuery())
 					.createQuery();
