@@ -3,11 +3,14 @@ package com.prince.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,8 +86,29 @@ public class PersonService extends CommonService<Person>{
 
 
 	public List<Person> findBySQLRestrication() {
-		// TODO Auto-generated method stub
 		return personDao.findBySQLRestrication();
+	}
+	
+	@Async
+	public Future<List<Person>> findAllAsync(){
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Person> list = personDao.findAll();
+		return new AsyncResult<List<Person>>(list);
+	}
+	
+	public List<Person> findAllSync(){
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return personDao.findAll();
 	}
 
 

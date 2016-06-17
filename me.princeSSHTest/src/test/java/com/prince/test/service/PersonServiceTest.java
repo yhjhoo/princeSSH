@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
 
@@ -37,7 +39,7 @@ import com.prince.service.WorldCityService;
 //@TestExecutionListeners({
 //	DependencyInjectionTestExecutionListener.class,
 //	TransactionalTestExecutionListener.class})
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
+//@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
 //@Transactional
 public class PersonServiceTest {
 
@@ -191,8 +193,33 @@ public class PersonServiceTest {
 	public void testSqlRestriction(){
 		List<Person> list = personService.findBySQLRestrication();
 		System.out.println("list size: " + list.size() );
-		
 	}
 	
 	
+	@Test
+	public void asyncTest1() throws InterruptedException, ExecutionException{
+		long start = System.currentTimeMillis();
+		List<Future<List<Person>>> items = new ArrayList<>();
+		for(int i=0; i<10; i++){
+			Future<List<Person>> item = personService.findAllAsync();
+			items.add(item);
+		}
+		
+		for(Future<List<Person>> item : items){
+			System.out.println(item.get());
+		}
+		System.out.println(System.currentTimeMillis() - start);
+	}
+
+	@Test
+	public void asyncTest2(){
+		long start = System.currentTimeMillis();
+		for(int i=0; i<10; i++){
+			System.out.println(personService.findAllSync() );
+		}
+		
+		System.out.println(System.currentTimeMillis() - start);
+		
+	}
 }
+
