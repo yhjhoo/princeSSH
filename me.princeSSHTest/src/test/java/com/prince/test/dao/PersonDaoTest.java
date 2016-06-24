@@ -10,7 +10,6 @@ import org.apache.commons.logging.Log;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.apache.solr.common.util.Hash;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
@@ -41,18 +40,10 @@ import com.prince.model.Person;
 import com.prince.model.WorldCity;
 import com.prince.service.PersonService;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
 		"classpath*:Spring/Spring_*.xml"
-//		"classpath*:spring/applicationContext-command.xml",
-//		"classpath*:spring/applicationContext-config.xml",
-//		"classpath*:spring/applicationContext-dataAccess.xml",
-//		"classpath*:spring/applicationContext-dataSource.xml",
-//		"classpath*:spring/applicationContext-repository.xml",
-//		"classpath*:spring/applicationContext-2-dataAccess.xml",
-//		"classpath*:spring/applicationContext-2-dataSource.xml",
-//		"classpath*:spring/applicationContext-email.xml"
-		
 		})
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
@@ -93,16 +84,27 @@ public class PersonDaoTest {
 		System.out.println(p);
 	}
 	
+	@Test
+	public void testIndexSearch() throws InterruptedException{
+		testIndexPerson();
+		testSearchPerson1();
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testIndexPerson(){
-		Session session = personDao.getSessionFactory().getCurrentSession();
+	public void testIndexPerson() throws InterruptedException{
+		/*Session session = personDao.getSessionFactory().getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		
 		Person person = personDao.getById(1);
 		
-		fullTextSession.index(person);
+		fullTextSession.index(person);*/
+		
+		
+		Session session = personDao.getSessionFactory().getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		fullTextSession.createIndexer().startAndWait();
 	}
 	
 	@Test
@@ -115,7 +117,7 @@ public class PersonDaoTest {
 				qb.keyword()
 //				qb.phrase()
 //				.onFields( "firstName", "departements.name")
-				.onFields("firstName").matching("first 11")
+				.onFields("firstName").matching("first")
 //				.onField("firstName").sentence("first 12")
 //				.onFields("hasFever").matching(false)
 				.createQuery();
@@ -123,7 +125,7 @@ public class PersonDaoTest {
 		FullTextQuery fq = fullTextSession.createFullTextQuery(luceneQuery, Person.class);
 //		Sort sort = new Sort(new SortField("departements.name", SortField.STRING, true));
 //		fq.setSort(sort);
-		List<Person> list = fq.setFirstResult(0).setMaxResults(2).list();
+		List<Person> list = fq.list();
 		
 		System.out.println("list size: " + fq.getResultSize() );
 		
@@ -152,6 +154,7 @@ public class PersonDaoTest {
 		Person p = new Person();
 		p.setFirstName("first " + i);
 		p.setLastName("last " + i);
+		p.setCreateDate(new Date() );
 		
 		/*List<Department> listD = departmentDao.findAll();
 		if(listD==null || listD.size()==0){

@@ -1,6 +1,7 @@
 package com.prince.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -18,15 +19,18 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.DynamicBoost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.engine.BoostStrategy;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Indexed
+@DynamicBoost(impl=DateBoostStrategy.class)
 public class Person implements Serializable{
 	@Id
 	@GeneratedValue
@@ -38,7 +42,7 @@ public class Person implements Serializable{
 	
 	@Column
 	@Length(max=10)
-	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.NO)
+	@Field(index=Index.YES)
 	private String firstName;
 
 	@IndexedEmbedded
@@ -52,10 +56,15 @@ public class Person implements Serializable{
 	//@Field
 	@IndexedEmbedded
 	@ManyToOne
-	@JoinColumn(name = "location_fk", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_Person_location"))
+//	@JoinColumn(name = "location_fk", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_Person_location"))
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	// @ForeignKey(name = "fk_Person_departement")
 	private WorldCity worldCity;
+	
+	
+	@Column(name = "createDate")
+	@Field
+	private Date createDate; // CRE_ON DATE,
 
 	public String getFirstName() {
 		return firstName;
@@ -158,5 +167,13 @@ public class Person implements Serializable{
 		} else if (!worldCity.equals(other.worldCity))
 			return false;
 		return true;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 }

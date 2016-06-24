@@ -5,9 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.apache.solr.analysis.LowerCaseFilterFactory;
-import org.apache.solr.analysis.SnowballPorterFilterFactory;
-import org.apache.solr.analysis.StandardTokenizerFactory;
+
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.annotations.TokenFilterDef;
@@ -16,17 +14,16 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
-
 @Entity(name="meta_location")
 @Indexed
-@AnalyzerDef(name = "customanalyzer",
-tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-filters = {
-  @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-  @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-    @Parameter(name = "language", value = "English")
-  })
-})
+//@AnalyzerDef(name = "customanalyzer",
+//tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+//filters = {
+//  @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+//  @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+//    @Parameter(name = "language", value = "English")
+//  })
+//})
 public class WorldCity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -36,7 +33,7 @@ public class WorldCity {
 	private String iso;
 	
 	@Field
-	@Analyzer(definition = "customanalyzer")
+//	@Analyzer(definition = "customanalyzer")
 	private String local_name;
 	
 	private String type;

@@ -43,7 +43,7 @@
 	
 	
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.prince.model" />
 		<!-- <property name="entityInterceptor" ref="auditLogInterceptor"/>-->
@@ -55,9 +55,9 @@
 	            <!-- <prop key="hibernate.jdbc.fetch_size">50</prop>
 				<prop key="hibernate.jdbc.batch_size">30</prop>--> 
 				
-				<prop key="hibernate.search.default.directory_provider">filesystem</prop>
-
-				<prop key="hibernate.search.default.indexBase">/opt/lucene/indexes</prop>
+				<prop key="hibernate.search.default.directory_provider">infinispan</prop>
+				<prop key="hibernate.search.infinispan.configuration_resourcename">infinispan.xml</prop>
+				<!-- <prop key="hibernate.search.default.indexBase">/opt/lucene/indexes</prop> -->
 	        </props>
 		</property>
 	</bean>
@@ -65,7 +65,7 @@
 	   
 
 	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
