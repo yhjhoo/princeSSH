@@ -28,6 +28,7 @@ import org.springframework.util.Assert;
 import com.prince.model.Department;
 import com.prince.model.Person;
 import com.prince.model.WorldCity;
+import com.prince.model.enums.Gender;
 import com.prince.service.DepartmentService;
 import com.prince.service.PersonService;
 import com.prince.service.WorldCityService;
@@ -87,6 +88,7 @@ public class PersonServiceTest {
 		Person person = new Person();
 		person.setFirstName("first Name");
 		person.setLastName("last Name");
+		person.setGender(Gender.M);
 		
 		Person person1 = new Person();
 		person1.setFirstName("first Name 123456");

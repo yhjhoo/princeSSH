@@ -1,12 +1,20 @@
 package com.prince.test.dao;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
+import org.apache.lucene.document.DateTools;
+import org.apache.lucene.document.DateTools.Resolution;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -19,6 +27,7 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.dsl.QueryContextBuilder;
+import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,7 +38,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Repeat;
+import org.springframework.test.annotation.Rollback;
 
 import com.opensymphony.xwork2.inject.Inject;
 import com.prince.dao.DepartmentDao;
@@ -48,7 +59,8 @@ import com.prince.service.PersonService;
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	TransactionalTestExecutionListener.class})
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
+//@Rollback
+@Commit
 @Transactional
 public class PersonDaoTest {
 
@@ -117,14 +129,40 @@ public class PersonDaoTest {
 				qb.keyword()
 //				qb.phrase()
 //				.onFields( "firstName", "departements.name")
-				.onFields("firstName").matching("first")
+				.onFields("firstName").matching("12")
+//				.onFields("personId").matching(1)
 //				.onField("firstName").sentence("first 12")
 //				.onFields("hasFever").matching(false)
 				.createQuery();
 		
+		luceneQuery = qb
+				.bool()
+				.must(qb.keyword().onField("firstName").matching("12").createQuery())
+				.must(qb.keyword().onField("departements.name").matching("IT13").createQuery())
+//				.must(qb.phrase().onField("departements.name").ignoreAnalyzer().sentence("IT").createQuery())
+				//.must(qb.keyword().onField("worldCity.local_name").createQuery())
+				.createQuery();
+		
+		/*luceneQuery = qb.range().onField("createDate")
+				.ignoreFieldBridge()
+				.from(DateTools.dateToString(new Date(), Resolution.DAY))
+				.to(DateTools.dateToString(new Date(), Resolution.MINUTE)).createQuery();*/
+		
+		/*LocalDate ld = LocalDate.of(2016, 01, 01);
+		
+		LocalDate ld1 = LocalDate.of(2016, 10, 01);
+		
+		Instant instant = ld.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+		Instant instant1 = ld1.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+
+		
+		luceneQuery = qb.range().onField("createDate")
+				.from(Date.from(instant))
+				.to(Date.from(instant1)  ).createQuery();*/
+		
 		FullTextQuery fq = fullTextSession.createFullTextQuery(luceneQuery, Person.class);
-//		Sort sort = new Sort(new SortField("departements.name", SortField.STRING, true));
-//		fq.setSort(sort);
+		Sort sort = new Sort(new SortField("createDate", SortField.Type.LONG, false));
+		fq.setSort(sort);
 		List<Person> list = fq.list();
 		
 		System.out.println("list size: " + fq.getResultSize() );
@@ -139,6 +177,9 @@ public class PersonDaoTest {
 //			worldCityDao.saveOrUpdate(wc);
 			
 //			System.out.println(wc );
+			for(Department dept : wc.getDepartements()){
+				System.out.println(dept);
+			}
 		}
 	}
 	
@@ -149,12 +190,13 @@ public class PersonDaoTest {
 		Long sum = personDao.findAllCount();
 		System.out.println("list size: " + sum );
 		
-		int i = 16;
+		int i = 12;
 		
 		Person p = new Person();
 		p.setFirstName("first " + i);
 		p.setLastName("last " + i);
 		p.setCreateDate(new Date() );
+		p.setEmail("huajie.yang@cimb.com,");
 		
 		/*List<Department> listD = departmentDao.findAll();
 		if(listD==null || listD.size()==0){
@@ -167,7 +209,7 @@ public class PersonDaoTest {
 		
 		
 		Department departement1 = new Department();
-		departement1.setName("dept" + i);
+		departement1.setName("IT" + i);
 		departement1.setDescription("dept" + i + " desc");
 		
 		Department departement2 = new Department();
@@ -182,6 +224,12 @@ public class PersonDaoTest {
 		
 		try {
 			personDao.save(p);
+		} catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> set = e.getConstraintViolations();
+			for(ConstraintViolation<?> vio : set){
+				ConstraintViolationImpl<Object> d = (ConstraintViolationImpl<Object>) vio;
+				System.out.println(d.getMessage());
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

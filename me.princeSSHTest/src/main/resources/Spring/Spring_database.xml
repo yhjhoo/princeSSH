@@ -13,8 +13,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task.xsd"
-        default-lazy-init="false">
+        http://www.springframework.org/schema/task/spring-task.xsd">
         
         
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
@@ -55,8 +54,11 @@
 	            <!-- <prop key="hibernate.jdbc.fetch_size">50</prop>
 				<prop key="hibernate.jdbc.batch_size">30</prop>--> 
 				
-				<prop key="hibernate.search.default.directory_provider">infinispan</prop>
-				<prop key="hibernate.search.infinispan.configuration_resourcename">infinispan.xml</prop>
+				<!-- <prop key="hibernate.search.default.directory_provider">infinispan</prop>
+				<prop key="hibernate.search.infinispan.configuration_resourcename">infinispan.xml</prop> -->
+				
+				<prop key="hibernate.search.default.directory_provider">filesystem</prop>
+				<prop key="hibernate.search.default.indexBase">/opt/lucene/indexes</prop>
 				<!-- <prop key="hibernate.search.default.indexBase">/opt/lucene/indexes</prop> -->
 	        </props>
 		</property>

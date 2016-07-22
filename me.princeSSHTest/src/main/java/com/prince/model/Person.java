@@ -6,34 +6,44 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DynamicBoost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.engine.BoostStrategy;
+import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.SortableField;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+
+import com.prince.model.enums.Gender;
 
 @Entity
 @Indexed
-@DynamicBoost(impl=DateBoostStrategy.class)
+//@DynamicBoost(impl=DateBoostStrategy.class)
 public class Person implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Field(name="personId")
 	private Integer id;
 
 	@Column
@@ -44,10 +54,22 @@ public class Person implements Serializable{
 	@Length(max=10)
 	@Field(index=Index.YES)
 	private String firstName;
+	
+	
+	@Column
+	@Length(max=100)
+	@Field
+	@Email
+	private String email;
 
-	@IndexedEmbedded
+	@IndexedEmbedded(depth=2)
 	@ManyToMany
 //	@JoinColumn(name = "departement_fk", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_Person_departement"))
+	@JoinTable(
+	        joinColumns = {@JoinColumn(name = "personId", foreignKey = @ForeignKey(name = "fk_personId"))},
+	        inverseJoinColumns = {@JoinColumn(name = "departmentId", foreignKey = @ForeignKey(name = "fk_departmentId"))},
+	        uniqueConstraints = {@UniqueConstraint(columnNames = {"personId", "departmentId"})}
+	)
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	// @ForeignKey(name = "fk_Person_departement")
 	private Set<Department> departements;
@@ -56,15 +78,26 @@ public class Person implements Serializable{
 	//@Field
 	@IndexedEmbedded
 	@ManyToOne
-//	@JoinColumn(name = "location_fk", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_Person_location"))
+	@JoinColumn(name = "location_fk", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_Person_location"))
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	// @ForeignKey(name = "fk_Person_departement")
 	private WorldCity worldCity;
 	
 	
 	@Column(name = "createDate")
-	@Field
+	@Field(analyze=Analyze.NO)
+	@SortableField
+	@DateBridge(resolution = Resolution.DAY)
 	private Date createDate; // CRE_ON DATE,
+	
+	
+	/*@Column(name="gender", insertable=false, updatable=false, length=30)
+	private String genderStr;*/
+	
+	@Column(name="gender", length = 10)
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Gender gender = Gender.M;
 
 	public String getFirstName() {
 		return firstName;
@@ -175,5 +208,21 @@ public class Person implements Serializable{
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 }

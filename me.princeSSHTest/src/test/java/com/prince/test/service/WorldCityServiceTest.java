@@ -27,11 +27,6 @@ import com.prince.service.WorldCityService;
 @ContextConfiguration(locations={
 	"classpath*:Spring/Spring_*.xml"
 	})
-//@TestExecutionListeners({
-//	DependencyInjectionTestExecutionListener.class,
-//	TransactionalTestExecutionListener.class})
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
-@Transactional
 public class WorldCityServiceTest {
 
 	@Resource
@@ -49,5 +44,4 @@ public class WorldCityServiceTest {
 		}	
 	}
 	
-		
 }
