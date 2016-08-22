@@ -59,7 +59,10 @@ public class PersonServiceTest {
 		List<Person> list = personService.findAll();
 		System.out.println("list size: " + list.size() );
 		for(Person p : list){
+//			p.setEmail("yhjhoo21@ddd.com");
+			personService.update(p);
 			System.out.println(p);
+			break;
 		}	
 	}
 	

@@ -48,6 +48,10 @@ public abstract class CommonService<T> {
 		commonDao.saveOrUpdate(obj);
 	}
 	
+	public void update(Object obj){
+		commonDao.update(obj);
+	}
+	
 	public void delete(Object obj){
 		commonDao.delete(obj);
 	}

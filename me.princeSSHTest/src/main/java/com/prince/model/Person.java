@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PreUpdate;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
@@ -33,6 +35,7 @@ import org.hibernate.search.annotations.SortableField;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
+
 import com.prince.model.enums.Gender;
 
 @Entity
@@ -48,11 +51,13 @@ public class Person implements Serializable{
 
 	@Column
 	@Length(max=10)
+//	@Audited
 	private String lastName;
 	
 	@Column
 	@Length(max=10)
 	@Field(index=Index.YES)
+//	@Audited
 	private String firstName;
 	
 	
@@ -60,6 +65,7 @@ public class Person implements Serializable{
 	@Length(max=100)
 	@Field
 	@Email
+//	@Audited
 	private String email;
 
 	@IndexedEmbedded(depth=2)
@@ -224,5 +230,15 @@ public class Person implements Serializable{
 
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	@PreUpdate
+	public void preUpdate(){
+		System.out.println("preUpdate");
+	}
+	
+	@PostLoad
+	public void postLoad(){
+		System.out.println("postLoad");
 	}
 }

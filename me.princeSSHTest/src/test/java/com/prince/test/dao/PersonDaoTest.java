@@ -43,12 +43,12 @@ import org.springframework.test.annotation.Repeat;
 import org.springframework.test.annotation.Rollback;
 
 import com.opensymphony.xwork2.inject.Inject;
+import com.prince.dao.*;
 import com.prince.dao.DepartmentDao;
 import com.prince.dao.PersonDao;
+
 import com.prince.dao.WorldCityDao;
-import com.prince.model.Department;
-import com.prince.model.Person;
-import com.prince.model.WorldCity;
+import com.prince.model.*;
 import com.prince.service.PersonService;
 
 
@@ -72,6 +72,22 @@ public class PersonDaoTest {
 	
 	@Resource
 	private DepartmentDao departmentDao;
+	
+	@Resource
+	private ContractEmployeeDao contractEmployeeDao;
+	
+	@Test
+	public void testCorpUser(){
+		System.out.println("Hello Test");
+		Assert.notNull(personDao);
+		List<ContractEmployee> list = contractEmployeeDao.findAll();
+		System.out.println("list size: " + list.size() );
+		
+		ContractEmployee person = new ContractEmployee();
+		person.setPayPerHour(100);
+		contractEmployeeDao.save(person );
+	}
+	
 	
 	@Test
 	public void testFindAll(){
