@@ -2,6 +2,8 @@ package com.prince.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import java.util.stream.Stream;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.*;
 
@@ -16,6 +18,9 @@ public class Struts2Action extends ActionSupport {
 			@Result(name="success", location="index.jsp")
 	})
 	public String index(){
+		
+		//test for java8 support
+		Stream.of("Hello", "Hello1").forEach(System.out::println);
 		log.info("Test action");
 		return SUCCESS;
 	}
