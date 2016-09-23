@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,7 +27,8 @@ public abstract class CommonDao<T>{
 
 	private Class<T> persistantClass;
 
-	private Logger log = Logger.getLogger(this.getClass());
+	
+	protected final Log log = LogFactory.getLog(this.getClass());
 	
 	@SuppressWarnings("unchecked")
 	public CommonDao() {

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration monitorInterval="5">
+	<Properties>  
+		<Property name="log-path">/var/log/</Property>
+	</Properties>
+	
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d [%t%X{requestId}] %-5p (%c:%L) - %m%n" />
+		</Console>
+		<RollingFile name="app_info" fileName="${log-path}/sshTest_info.log" append="true" filePattern="${log-path}/sshTest_info_%d{yyyy-MM-dd}-%i.log" >
+			<PatternLayout pattern="%d [%t%X{requestId}] %-5p (%c:%L) - %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="30"/>
+		</RollingFile>
+		<RollingFile name="app_error" fileName="${log-path}/sshTest_error.log" append="false" filePattern="${log-path}/sshTest_error_%d{yyyy-MM-dd}-%i.log" >
+			<Filters>
+				<ThresholdFilter level="error"/>
+			</Filters>
+			<PatternLayout pattern="%d [%t%X{requestId}] %-5p (%c:%L) - %m%n" />
+			
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="50 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="30"/>
+		</RollingFile> 
+	</Appenders>
+	
+	
+		
+	<Loggers>
+		<Logger name="org.springframework.ws.client.MessageTracing.sent" level="trace" />
+		<Logger name="org.springframework.ws.client.MessageTracing.received" level="trace" />
+		<Logger name="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" level="error"/>
+		
+		
+		<!-- REF: uncomment to show hibernate SQL -->
+		<!-- <Logger name="org.hibernate.SQL" level="debug"/> -->
+
+		<Root level="info">
+			<AppenderRef ref="STDOUT" />
+            <AppenderRef ref="app_info"/>  
+            <AppenderRef ref="app_error"/>
+		</Root>
+	</Loggers>
+</Configuration>

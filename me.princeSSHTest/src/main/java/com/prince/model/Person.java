@@ -34,7 +34,7 @@ import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.SortableField;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-
+import org.springframework.data.web.config.SpringDataWebConfigurationMixin;
 
 import com.prince.model.enums.Gender;
 
@@ -45,7 +45,7 @@ public class Person implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Field(name="personId")
 	private Integer id;
 
