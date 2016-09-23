@@ -18,6 +18,8 @@
 
     <!-- Necessary for Showcase because default includes org.apache.struts2.* -->
     <constant name="struts.convention.exclude.packages" value="com.prince.hibernate.*,com.prince.model.*"/>
+    
+    <constant name="struts.action.excludePattern" value="/api/*.*"/>
 
     <!-- <constant name="struts.freemarker.manager.classname" value="customFreemarkerManager" />
     <constant name="struts.serve.static" value="true" />
