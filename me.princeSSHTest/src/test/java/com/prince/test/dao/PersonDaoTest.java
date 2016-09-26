@@ -76,6 +76,7 @@ public class PersonDaoTest {
 	@Resource
 	private ContractEmployeeDao contractEmployeeDao;
 	
+	
 	@Test
 	public void testCorpUser(){
 		System.out.println("Hello Test");
@@ -145,19 +146,19 @@ public class PersonDaoTest {
 				qb.keyword()
 //				qb.phrase()
 //				.onFields( "firstName", "departements.name")
-				.onFields("firstName").matching("12")
+				.onFields("firstName").matching("Yang Hua")
 //				.onFields("personId").matching(1)
 //				.onField("firstName").sentence("first 12")
 //				.onFields("hasFever").matching(false)
 				.createQuery();
 		
-		luceneQuery = qb
+		/*luceneQuery = qb
 				.bool()
 				.must(qb.keyword().onField("firstName").matching("12").createQuery())
 				.must(qb.keyword().onField("departements.name").matching("IT13").createQuery())
 //				.must(qb.phrase().onField("departements.name").ignoreAnalyzer().sentence("IT").createQuery())
 				//.must(qb.keyword().onField("worldCity.local_name").createQuery())
-				.createQuery();
+				.createQuery();*/
 		
 		/*luceneQuery = qb.range().onField("createDate")
 				.ignoreFieldBridge()
@@ -177,7 +178,8 @@ public class PersonDaoTest {
 				.to(Date.from(instant1)  ).createQuery();*/
 		
 		FullTextQuery fq = fullTextSession.createFullTextQuery(luceneQuery, Person.class);
-		Sort sort = new Sort(new SortField("createDate", SortField.Type.LONG, false));
+		Sort sort = new Sort(SortField.FIELD_SCORE, new SortField("createDate", SortField.Type.LONG, true));
+//		Sort sort = new Sort(new SortField("createDate", SortField.Type.LONG, true));
 		fq.setSort(sort);
 		List<Person> list = fq.list();
 		
@@ -201,7 +203,7 @@ public class PersonDaoTest {
 	
 	
 	@Test
-//	@Repeat(1000)
+	@Repeat(1000)
 	public void testCreate() {//throws Exception{
 		Long sum = personDao.findAllCount();
 		System.out.println("list size: " + sum );
@@ -212,7 +214,7 @@ public class PersonDaoTest {
 		p.setFirstName("first " + i);
 		p.setLastName("last " + i);
 		p.setCreateDate(new Date() );
-		p.setEmail("huajie.yang@cimb.com,");
+		p.setEmail("huajie.yang@cimb.com");
 		
 		/*List<Department> listD = departmentDao.findAll();
 		if(listD==null || listD.size()==0){
@@ -236,7 +238,7 @@ public class PersonDaoTest {
 		departements.add(departement1);
 		departements.add(departement2);
 		
-		p.setDepartements(departements );
+//		p.setDepartements(departements );
 		
 		try {
 			personDao.save(p);
