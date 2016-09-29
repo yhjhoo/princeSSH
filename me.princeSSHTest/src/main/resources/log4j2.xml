@@ -38,6 +38,7 @@
 		<Logger name="org.springframework.ws.client.MessageTracing.received" level="trace" />
 		<Logger name="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" level="error"/>
 		
+		<!-- <Logger name="com.github.isrsal.logging.LoggingFilter" level="DEBUG"/> -->
 		
 		<!-- REF: uncomment to show hibernate SQL -->
 		<!-- <Logger name="org.hibernate.SQL" level="debug"/> -->

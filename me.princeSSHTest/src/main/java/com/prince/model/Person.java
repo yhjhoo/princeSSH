@@ -36,6 +36,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.web.config.SpringDataWebConfigurationMixin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prince.model.enums.Gender;
 
 @Entity
@@ -78,6 +79,7 @@ public class Person implements Serializable{
 	)
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	// @ForeignKey(name = "fk_Person_departement")
+	@JsonIgnore
 	private Set<Department> departements;
 	
 	

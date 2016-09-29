@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE struts PUBLIC
-	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
-	"http://struts.apache.org/dtds/struts-2.3.dtd">
-
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
 
     <!-- Some or all of these can be flipped to true for debugging -->
@@ -19,7 +18,7 @@
     <!-- Necessary for Showcase because default includes org.apache.struts2.* -->
     <constant name="struts.convention.exclude.packages" value="com.prince.hibernate.*,com.prince.model.*"/>
     
-    <constant name="struts.action.excludePattern" value="/api/*.*"/>
+    <constant name="struts.action.excludePattern" value="/rest/*.*,/swagger-resources/*.*,/v2/*.*,/swagger/*.*, /docs"/>
 
     <!-- <constant name="struts.freemarker.manager.classname" value="customFreemarkerManager" />
     <constant name="struts.serve.static" value="true" />

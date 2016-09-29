@@ -34,12 +34,6 @@ public class PersonService extends CommonService<Person>{
 	@Resource
 	private DepartmentDao departmentDao;
 	
-	
-//	@Resource
-//	public void setCommonDao(CommonDao<Person> commonDao) {
-//		this.commonDao = personDao;
-//	}
-	
 	@Resource
 	@Override
 	public void setCommonDao(CommonDao<Person> commonDao) {
